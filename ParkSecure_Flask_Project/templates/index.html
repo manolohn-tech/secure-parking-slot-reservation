@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ParkSecure | Secure Parking</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">P</span> Park<span>Secure</span></a><span class="secure-label">● Secure reservation demo</span></header>
+<main class="container">
+  <section class="hero"><div><p class="eyebrow">SMART PARKING · SIMPLE BOOKING</p><h1>Your parking spot,<br><span>reserved securely.</span></h1><p class="hero-copy">Find an available slot, choose your time, and reserve it in seconds.</p></div><div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="road"><span>P</span><i></i><i></i><i></i></div><div class="car"><b></b><em></em></div></div></section>
+  {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+  <section class="auth-layout">
+    <div class="panel auth-info"><p class="eyebrow">WELCOME TO PARKSECURE</p><h2>Parking without<br>the uncertainty.</h2><p>Sign in to manage your reservations. New here? Create an account in a few seconds.</p><ul><li>✓ Secure password hashing</li><li>✓ Protected user sessions</li><li>✓ Double-booking prevention</li></ul></div>
+    <div class="panel auth-form">
+      <div class="tabs"><button class="tab active" data-tab="login">Log in</button><button class="tab" data-tab="register">Create account</button></div>
+      <form id="loginForm" method="post" action="{{ url_for('login') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><label>Email address<input type="email" name="email" placeholder="you@example.com" required maxlength="254" autocomplete="email"></label><label>Password<input type="password" name="password" placeholder="Enter your password" required maxlength="128" autocomplete="current-password"></label><button class="btn btn-primary full" type="submit">Log in <span>→</span></button></form>
+      <form id="registerForm" class="hidden" method="post" action="{{ url_for('register') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><label>Full name<input name="name" placeholder="Your name" required minlength="2" maxlength="60" autocomplete="name"></label><label>Email address<input type="email" name="email" placeholder="you@example.com" required maxlength="254" autocomplete="email"></label><label>Password<input type="password" name="password" placeholder="At least 8 characters" required minlength="8" maxlength="128" autocomplete="new-password"></label><button class="btn btn-primary full" type="submit">Create account <span>→</span></button></form>
+      <p class="tiny-note">Educational mini project · Do not use real passwords.</p>
+    </div>
+  </section>
+  <footer><span>© 2026 ParkSecure</span><span>Secure Software Engineering · Mini Project</span></footer>
+</main>
+</body></html>

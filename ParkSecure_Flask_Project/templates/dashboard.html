@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dashboard | ParkSecure</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><script src="{{ url_for('static', filename='app.js') }}" defer></script></head>
+<body>
+<header class="topbar"><a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-icon">P</span> Park<span>Secure</span></a><div class="top-right"><span class="secure-label">● Secure reservation demo</span><form method="post" action="{{ url_for('logout') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="btn btn-quiet" type="submit">Log out</button></form></div></header>
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+  <section class="hero"><div><p class="eyebrow">SMART PARKING · SIMPLE BOOKING</p><h1>Your parking spot,<br><span>reserved securely.</span></h1><p class="hero-copy">Find an available slot, choose your time, and reserve it in seconds.</p></div><div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="road"><span>P</span><i></i><i></i><i></i></div><div class="car"><b></b><em></em></div></div></section>
+  <div class="welcome-row"><div><p class="eyebrow">YOUR DASHBOARD</p><h2>Hey, <span>{{ name.split(' ')[0] }}</span> 👋</h2><p class="muted">Choose a time window to see available spaces.</p></div><div class="mini-stat"><strong id="availableCount">—</strong><span>slots available</span></div></div>
+  <div id="clientNotice" class="flash hidden" role="status"></div>
+  <div class="booking-grid">
+    <section class="panel booking-panel"><div class="section-title"><div><p class="eyebrow">01 / YOUR TIME</p><h3>When are you parking?</h3></div><span class="step-number">01</span></div>
+      <div class="time-grid"><label>Start time<input id="startAt" type="datetime-local" required></label><label>End time<input id="endAt" type="datetime-local" required></label></div>
+      <button id="searchBtn" class="btn btn-primary full" type="button">Check availability <span>→</span></button>
+      <div class="section-title slot-heading"><div><p class="eyebrow">02 / PICK A SPACE</p><h3>Available parking slots</h3></div><span class="legend"><i></i> Available</span></div>
+      <div id="slotGrid" class="slot-grid"><div class="empty-state">Select your parking time, then check availability.</div></div>
+      <form id="reserveForm" class="booking-footer" method="post" action="{{ url_for('reserve') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><input type="hidden" id="slotId" name="slot_id"><input type="hidden" id="reserveStart" name="start_at"><input type="hidden" id="reserveEnd" name="end_at"><span id="selectedLabel">No slot selected</span><button id="reserveBtn" class="btn btn-dark" type="submit" disabled>Reserve slot</button></form>
+    </section>
+    <aside class="panel summary-panel"><p class="eyebrow">BOOKING SUMMARY</p><h3>Your reservation</h3><div class="summary-icon">⌖</div><p id="summaryEmpty" class="muted">Select an available slot to see your booking summary.</p><div id="summaryDetails" class="hidden"><div class="summary-line"><span>Parking slot</span><strong id="sumSlot">—</strong></div><div class="summary-line"><span>Duration</span><strong id="sumDuration">—</strong></div><div class="summary-line"><span>Estimated total</span><strong id="sumCost">—</strong></div></div><div class="security-note"><span>♢</span><p><strong>Secure by design</strong><br>Availability is checked again on the server before confirming.</p></div></aside>
+  </div>
+  <section class="panel reservations-panel"><div class="section-title"><div><p class="eyebrow">YOUR ACTIVITY</p><h3>My reservations</h3></div><button id="refreshBtn" class="btn btn-quiet" type="button">↻ Refresh</button></div><div id="reservationList" class="reservation-list"><p class="muted">Loading reservations…</p></div></section>
+  <footer><span>© 2026 ParkSecure</span><span>Secure Software Engineering · Mini Project</span></footer>
+</main>
+</body></html>
